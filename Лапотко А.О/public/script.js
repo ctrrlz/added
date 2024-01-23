@@ -61,14 +61,20 @@ document.getElementById('all-products').addEventListener('click', function () {
         addToCartButton.addEventListener('click', () => addToCart(product));
 
         const detailsButton = document.createElement('button');
-                detailsButton.textContent = 'Подробнее';
-                detailsButton.addEventListener('click', () => showProductDetails(product));
+        detailsButton.textContent = 'Подробнее';
+        detailsButton.addEventListener('click', () => showProductDetails(product));
+
+        //сравнение
+        const addToComparisonButton = document.createElement('button');
+        addToCartButton.textContent = 'Добавить в сравнение';
+        addToCartButton.addEventListener('click', () => addToComparison(product));
         
         card.appendChild(title);
         card.appendChild(price);
         card.appendChild(description);
         card.appendChild(addToCartButton);
         card.appendChild(detailsButton);
+        card.appendChild(addToComparisonButton);
 
         return card;
     }
@@ -83,9 +89,9 @@ document.getElementById('all-products').addEventListener('click', function () {
             body: JSON.stringify(product),
         })
         .then(response => response.json())
-        .then(updatedCart => {
-            console.log('Товар добавлен в корзину:', product);
-        })
+       // .then(updatedCart => {
+      //      console.log('Товар добавлен в корзину:', product);
+       // })
     }  
         
         function showProductDetails(product) {
@@ -93,7 +99,15 @@ document.getElementById('all-products').addEventListener('click', function () {
             const detailsPageURL = `/product-details?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.price}&description=${encodeURIComponent(product.description)}&year=${product.year}&color=${encodeURIComponent(product.color)}`;
             window.location.href = detailsPageURL;
         }   
-        //добавлено
+
+        document.getElementById('filter-button').addEventListener('click', applyFilters());
+        const priceInput = getElementById('price');
+        const priceValue = getElementById('price-value');
+
+        priceInput.addEventListener('input', () =>  {
+            priceValue.textContent = priceInput.value;
+        });
+
         function applyFilters(){
             const selectedCategories=getSelectedCategories();
             const price=priceInput.value.trim();
@@ -101,7 +115,6 @@ document.getElementById('all-products').addEventListener('click', function () {
             const year=document.getElementById('year').value.trim();
             loadProducts(selectedCategories,price,color,year);
         }
-
         });
         
    

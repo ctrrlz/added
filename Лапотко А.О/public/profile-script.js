@@ -1,3 +1,4 @@
+//доработка
 document.addEventListener('DOMContentLoaded', () => {
     const userNav = document.getElementById('user-nav');
     const userInfo = document.getElementById('user-info');

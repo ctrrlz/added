@@ -186,7 +186,6 @@ let products = [
   }
 ];
 
-
 let cartItems = [];
 
 app.use(express.static('public'));
@@ -204,12 +203,16 @@ app.get('/profile', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });
 
+//сравнение
+app.get('/comparison', (req, res) => {
+    res.sendFile(path.join(__dirname, 'comparison', 'comparison.html'));
+  });
+
 app.get('/api/products', (req, res) => {
     if (req.query.categories) {
         const selectedCategories = req.query.categories.split(',').map(category => category.trim().toLowerCase());
         const filteredProducts = products.filter(product => selectedCategories.includes(product.category.toLowerCase()));
 
-        //фильтрация добавлена
         if(req.query.color){
             const selectedColor = req.query.color.toLowerCase();
             filteredProducts = filteredProducts.filter(product => product.color.toLowerCase()=== selectedColor)
@@ -258,8 +261,6 @@ app.post('/api/cart/remove', (req, res) => {
   if (itemIndex !== -1) {
       cartItems.splice(itemIndex, 1);
       res.json(cartItems);
-  } else {
-      res.status(404).json({ error: 'Товар не найден в корзине' });
   }
 });
 app.post('/api/cart/clear', (req, res) => {
@@ -269,7 +270,7 @@ app.post('/api/cart/clear', (req, res) => {
 
 let users = [];
 
-/*
+/*в доработке
 app.post('/api/register', (req, res) => {
     const newUser = req.body;
     const existingUser = users.find(user => user.username === newUser.username);
@@ -280,7 +281,6 @@ app.post('/api/register', (req, res) => {
         res.json(newUser);
     }
 });*/
-
 
 app.get('/product-details', (req, res) => {
   const productId = req.query.id;
@@ -296,15 +296,12 @@ app.get('/product-details', (req, res) => {
               color: product.color,
           },
       });
-  } else {
-      res.status(404).send('Товар не найден');
-  }
+  } 
 });
-
-
 
 app.listen(port, () => {
-    console.log(`Сервер запущен на http://localhost:${port}`);
+    console.log(`Сервер запущен`);
 });
-//Добавить:
-//Добавить фильтрацию(по цвету, году выпуска, цене(в виде бегунка)) 
+//страница с сравнением(придумать функционал, хотя бы минимальный)
+//доработка профиля(ркгистрация и заполнение информации при входе)
+//по цене от меньшего к большему и наоборот(фильтрация)
