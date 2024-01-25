@@ -88,9 +88,8 @@ document.getElementById('all-products').addEventListener('click', function () {
             body: JSON.stringify(product),
         })
         .then(response => response.json())
-        .then(updatedComparison => {
-            console.log('Товар добавлен в сравнение:', product);
-        });
+        
+        
     }
 
  
@@ -103,9 +102,7 @@ document.getElementById('all-products').addEventListener('click', function () {
             body: JSON.stringify(product),
         })
         .then(response => response.json())
-       // .then(updatedCart => {
-      //      console.log('Товар добавлен в корзину:', product);
-       // })
+      
     }  
         
         function showProductDetails(product) {

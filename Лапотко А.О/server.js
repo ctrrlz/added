@@ -137,7 +137,7 @@ let products = [
       "price": 150,
       "description": "Для вашего весёлого времяпрепровождения.",
       "color": "черный",
-      "year": 2020
+      "year": 2024
   },
   {
       "id": 16,
@@ -208,6 +208,8 @@ app.get('/comparison', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'comparison.html'));
   });
 
+
+
 app.get('/api/products', (req, res) => {
     if (req.query.categories) {
         const selectedCategories = req.query.categories.split(',').map(category => category.trim().toLowerCase());
@@ -237,6 +239,23 @@ app.get('/api/products', (req, res) => {
 app.get('/api/cart', (req, res) => {
     res.json(cartItems);
 });
+//пропуск был
+app.get('/api/comparison', (req, res) => {
+    res.json(comparisonItems);
+});
+
+app.post('/api/comparison', (req, res) => {
+    const newItem = req.body;
+
+    const existingItem = comparisonItems.find(item => item.id === newItem.id);
+
+    if (existingItem) {
+        res.json(comparisonItems);
+    } else {
+        comparisonItems.push(newItem);
+        res.json(comparisonItems);
+    }
+});
 
 app.post('/api/cart', (req, res) => {
     const newItem = req.body;
@@ -252,6 +271,8 @@ app.post('/api/cart', (req, res) => {
 
     res.json(cartItems);
 });
+
+
 
 app.post('/api/cart/remove', (req, res) => {
   const itemIdToRemove = req.body.id;
@@ -299,22 +320,10 @@ app.get('/product-details', (req, res) => {
   } 
 });
 
-app.post('/api/comparison', (req, res) => {
-    const newItem = req.body;
 
-    const existingItem = comparisonItems.find(item => item.id === newItem.id);
-
-    if (existingItem) {
-        res.json(comparisonItems);
-    } else {
-        comparisonItems.push(newItem);
-        res.json(comparisonItems);
-    }
-});
 
 app.listen(port, () => {
     console.log(`Сервер запущен`);
 });
-//страница с сравнением(придумать функционал, хотя бы минимальный)--
-//доработка профиля(ркгистрация и заполнение информации при входе)--
+//доработка профиля(регистрация и заполнение информации при входе)--
 //по цене от меньшего к большему и наоборот(фильтрация)--

@@ -73,14 +73,12 @@ nav a:hover {
         </nav>
     </header>
     <main id="comparison-container">
-        <!-- Здесь будут отображаться карточки сравниваемых товаров -->
     </main>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
     const comparisonContainer = document.getElementById('comparison-container');
 
-    // Загрузка товаров для сравнения
     fetch('/api/comparison')
         .then(response => response.json())
         .then(comparisonItems => {
@@ -109,10 +107,10 @@ nav a:hover {
 
         return card;
     }
-    highlightComparisonItems();
+   // highlightComparisonItems();
 });
 
-function highlightComparisonItems() {
+/*function highlightComparisonItems() {
     const comparisonItems = document.querySelectorAll('.product-card');
 
     let minPrice = Infinity;
@@ -143,7 +141,7 @@ function highlightComparisonItems() {
         newestItem.classList.add('highlight');
     }
 }
-
+*/
     </script>
 </body>
 </html>
