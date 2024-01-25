@@ -5,6 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Сравнение</title>
 </head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav {
+    margin-top: 10px;
+    display: flex;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+#comparison-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.product-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+}
+
+.product-card h2 {
+    margin-bottom: 5px;
+}
+
+.product-card p {
+    margin: 5px 0;
+}
+
+.highlight {
+    background-color: #4CAF50;
+    color: white;
+}
+
+</style>
 <body>
     <header>
         <h1>Сравнение товаров</h1>
@@ -12,10 +72,78 @@
             <a href="/">Вернуться в магазин</a>
         </nav>
     </header>
-    <main id="container">
+    <main id="comparison-container">
+        <!-- Здесь будут отображаться карточки сравниваемых товаров -->
     </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const comparisonContainer = document.getElementById('comparison-container');
+
+    // Загрузка товаров для сравнения
+    fetch('/api/comparison')
+        .then(response => response.json())
+        .then(comparisonItems => {
+            comparisonItems.forEach(item => {
+                const comparisonItemCard = createComparisonItemCard(item);
+                comparisonContainer.appendChild(comparisonItemCard);
+            });
+        });
+
+    function createComparisonItemCard(item) {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        const title = document.createElement('h2');
+        title.textContent = item.name;
+
+        const price = document.createElement('p');
+        price.textContent = `Цена: $${item.price}`;
+
+        const description = document.createElement('p');
+        description.textContent = item.description;
+
+        card.appendChild(title);
+        card.appendChild(price);
+        card.appendChild(description);
+
+        return card;
+    }
+    highlightComparisonItems();
+});
+
+function highlightComparisonItems() {
+    const comparisonItems = document.querySelectorAll('.product-card');
+
+    let minPrice = Infinity;
+    let maxYear = -Infinity;
+    let cheapestItem = null;
+    let newestItem = null;
+
+    comparisonItems.forEach(item => {
+        const price = parseInt(item.querySelector('p').textContent.split('$')[1]);
+        const year = parseInt(item.querySelector('p').textContent.split('год')[0]);
+
+        if (price < minPrice) {
+            minPrice = price;
+            cheapestItem = item;
+        }
+
+        if (year > maxYear) {
+            maxYear = year;
+            newestItem = item;
+        }
+    });
+
+    if (cheapestItem) {
+        cheapestItem.classList.add('highlight');
+    }
+
+    if (newestItem) {
+        newestItem.classList.add('highlight');
+    }
+}
+
+    </script>
 </body>
-<script>
-    //отсвечивать зеленым меньшую цену и больший год выпуска
-</script>
 </html>

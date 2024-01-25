@@ -187,6 +187,7 @@ let products = [
 ];
 
 let cartItems = [];
+let comparisonItems = [];
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -203,9 +204,8 @@ app.get('/profile', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });
 
-//сравнение
 app.get('/comparison', (req, res) => {
-    res.sendFile(path.join(__dirname, 'comparison', 'comparison.html'));
+    res.sendFile(path.join(__dirname, 'public', 'comparison.html'));
   });
 
 app.get('/api/products', (req, res) => {
@@ -299,9 +299,22 @@ app.get('/product-details', (req, res) => {
   } 
 });
 
+app.post('/api/comparison', (req, res) => {
+    const newItem = req.body;
+
+    const existingItem = comparisonItems.find(item => item.id === newItem.id);
+
+    if (existingItem) {
+        res.json(comparisonItems);
+    } else {
+        comparisonItems.push(newItem);
+        res.json(comparisonItems);
+    }
+});
+
 app.listen(port, () => {
     console.log(`Сервер запущен`);
 });
-//страница с сравнением(придумать функционал, хотя бы минимальный)
-//доработка профиля(ркгистрация и заполнение информации при входе)
-//по цене от меньшего к большему и наоборот(фильтрация)
+//страница с сравнением(придумать функционал, хотя бы минимальный)--
+//доработка профиля(ркгистрация и заполнение информации при входе)--
+//по цене от меньшего к большему и наоборот(фильтрация)--

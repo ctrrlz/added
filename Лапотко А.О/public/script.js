@@ -66,8 +66,8 @@ document.getElementById('all-products').addEventListener('click', function () {
 
         //сравнение
         const addToComparisonButton = document.createElement('button');
-        addToCartButton.textContent = 'Добавить в сравнение';
-        addToCartButton.addEventListener('click', () => addToComparison(product));
+        addToComparisonButton.textContent = 'Добавить в сравнение';
+        addToComparisonButton.addEventListener('click', () => addToComparison(product));
         
         card.appendChild(title);
         card.appendChild(price);
@@ -77,6 +77,20 @@ document.getElementById('all-products').addEventListener('click', function () {
         card.appendChild(addToComparisonButton);
 
         return card;
+    }
+
+    function addToComparison(product) {
+        fetch('/api/comparison', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(product),
+        })
+        .then(response => response.json())
+        .then(updatedComparison => {
+            console.log('Товар добавлен в сравнение:', product);
+        });
     }
 
  
@@ -99,7 +113,7 @@ document.getElementById('all-products').addEventListener('click', function () {
             const detailsPageURL = `/product-details?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.price}&description=${encodeURIComponent(product.description)}&year=${product.year}&color=${encodeURIComponent(product.color)}`;
             window.location.href = detailsPageURL;
         }   
-
+//не выходит
         document.getElementById('filter-button').addEventListener('click', applyFilters());
         const priceInput = getElementById('price');
         const priceValue = getElementById('price-value');
